@@ -2,6 +2,62 @@
     ViewData["Title"] = "Register";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Register Page</h1>
+<style>
+    .register {
+        max-width: fit-content;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .register-form-container {
+        width: 50%;
+        margin: 10px auto;
+    }
+
+    form {
+        text-align: left;
+    }
+
+    input {
+        line-height: 1em;
+        padding: 8px;
+        margin-bottom: 10px;
+        width: -webkit-fill-available;
+    }
+
+    .action-input {
+        text-align: left;
+        width: 60%;
+    }
+
+    .action-input input[type='checkbox'] {
+        width: 10%;
+    }
+
+    p {
+        text-align: center;
+    }
+</style>
+
+<div class="register">
+    <div class="header-container">
+        <h1>Kalam</h1>
+    </div>
+
+    <div class="register-form-container">
+        <h2>Register</h2>
+        <form method="post">
+            <label>Email</label>
+            <input type="email" name="emailaddress" placeholder="email" />
+            <label>Password</label>
+            <input type="password" name="password" placeholder="password" />
+            <label>Confirm Password</label>
+            <input type="password" name="c_password" placeholder="confirm password" />
+            <input type="submit" value="Register">
+
+            <p>ALready have an account? <a asp-area="" asp-controller="User" asp-action="Login">Login</a>
+            </p>
+        </form>
+    </div>
 </div>
