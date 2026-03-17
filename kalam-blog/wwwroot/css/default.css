@@ -29,8 +29,6 @@ body {
   word-wrap: break-word;
   overflow-wrap: break-word;
   margin: auto;
-  /* padding: 20px; */
-  /* max-width: var(--max-width); */
 }
 
 h1,

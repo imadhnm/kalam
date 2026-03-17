@@ -1,3 +1,5 @@
+@model UserViewModel;
+
 @{
     ViewData["Title"] = "Login";
 }
@@ -26,11 +28,6 @@
         width: -webkit-fill-available;
     }
 
-    .action-input {
-        text-align: left;
-        width: 60%;
-    }
-
     .action-input input[type='checkbox'] {
         width: 10%;
     }
@@ -47,20 +44,22 @@
 
     <div class="login-form-container">
         <h2>Login</h2>
-        <form method="post">
+        <form asp-controller="User" asp-action="Login" method="post">
             <label>Email</label>
-            <input type="email" name="emailaddress" placeholder="email" />
+            <input type="email" asp-for="Email" name="Email" placeholder="email" />
             <label>Password</label>
-            <input type="password" name="password" placeholder="password" />
-            <input type="submit" value="Login">
+            <input type="password" name="Password" placeholder="password" />
 
             <div class="action-input">
-                <label for="rememberMe">
+                <label for="rememberMe" style="float: left;">
                     <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe">
                     Remember me
                 </label>
+
+                <label style="float: right;"><a href="">Forgot Password?</a></label>
             </div>
-            <p><a href="">Forgot Password?</a></p>
+
+            <input type="submit" value="Login">
 
             <p>Join us! <a asp-area="" asp-controller="User" asp-action="Register">Register</a>
             </p>
