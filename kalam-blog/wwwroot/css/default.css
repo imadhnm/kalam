@@ -9,6 +9,8 @@
   --link-visited-colour: #8494ff;
   --max-width: 1336px;
   --button-colour: #4477ce;
+  --button-active-border: #76d2db;
+  --button-error-border: #da4848;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -61,6 +63,11 @@ footer {
 input {
   border: 1px solid;
   border-radius: 4px;
+}
+
+input:focus {
+  border: 3px solid var(--button-active-border);
+  outline: none;
 }
 
 button,

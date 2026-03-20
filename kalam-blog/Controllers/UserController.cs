@@ -26,8 +26,9 @@ public class UserController : Controller
         return View();
     }
 
-    // public async Task<IActionResult> Register()
-    // {
-    //     return View();
-    // }
+    [HttpPost]
+    public async Task<IActionResult> Register(UserViewModel model)
+    {
+        return View();
+    }
 }

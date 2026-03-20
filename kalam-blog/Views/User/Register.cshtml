@@ -1,3 +1,4 @@
+@model UserViewModel;
 @{
     ViewData["Title"] = "Register";
 }
@@ -47,17 +48,22 @@
 
     <div class="register-form-container">
         <h2>Register</h2>
-        <form method="post">
+        <form asp-controller="User" asp-action="Register" method="post">
             <label>Email</label>
-            <input type="email" name="emailaddress" placeholder="email" />
+            <input type="email" asp-for="Email" name="Email" placeholder="email" />
             <label>Password</label>
-            <input type="password" name="password" placeholder="password" />
+            <input type="password" asp-for="Password" name="Password" placeholder="password" />
             <label>Confirm Password</label>
             <input type="password" name="c_password" placeholder="confirm password" />
             <input type="submit" value="Register">
 
-            <p>ALready have an account? <a asp-area="" asp-controller="User" asp-action="Login">Login</a>
+            <p>Already have an account? <a asp-area="" asp-controller="User" asp-action="Login">Login</a>
             </p>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+    </script>
+}
