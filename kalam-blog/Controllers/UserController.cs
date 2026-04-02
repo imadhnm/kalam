@@ -1,12 +1,20 @@
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Options;
 
 namespace kalam_blog.Controllers;
 
 public class UserController : Controller
 {
-    public UserController()
-    {
+    private readonly IKalamUserService _userService;
+    private readonly IOptions<PwdRecipe> _hashRecipe;
 
+    public UserController(IKalamUserService userService, IOptions<PwdRecipe> hashRecipe)
+    {
+        _userService = userService;
+        _hashRecipe = hashRecipe;
     }
 
     public IActionResult Login()
@@ -16,8 +24,35 @@ public class UserController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Login(UserViewModel model)
+    public async Task<IActionResult> Login(LoginViewModel model)
     {
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState
+                            .Where(x => x.Value != null && x.Value.Errors.Count > 0)
+                            .Select(x => new
+                            {
+                                Property = x.Key,
+                                Errors = x.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
+                            });
+
+            foreach (var error in errors)
+            {
+                ModelState.AddModelError(error.Property, $"{error.Errors}");
+            }
+
+            return View(model);
+        }
+        var _password = PepperdPassword(model.Password);
+        var user = new UserDTO(model.Username, string.Empty, _password);
+
+        var res = await _userService.Login(user);
+
+        if (res)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         return View();
     }
 
@@ -29,6 +64,48 @@ public class UserController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(UserViewModel model)
     {
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState
+                            .Where(x => x.Value != null && x.Value.Errors.Count > 0)
+                            .Select(x => new
+                            {
+                                Property = x.Key,
+                                Errors = x.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
+                            });
+
+            foreach (var error in errors)
+            {
+                ModelState.AddModelError(error.Property, $"{error.Errors}");
+            }
+
+            return View(model);
+        }
+
+        var _password = PepperdPassword(model.Password);
+        var user = new UserDTO(model.Username, model.Email, _password);
+
+        var res = await _userService.Register(user);
+
+        if (res.IsSuccess)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         return View();
+    }
+
+    public async Task<IActionResult> VerifyEmail()
+    {
+        return View();
+    }
+
+    private string PepperdPassword(string password)
+    {
+        byte[] pepperBytes = Encoding.UTF8.GetBytes(_hashRecipe.Value.Secret);
+        byte[] pwdBytes = Encoding.UTF8.GetBytes(password);
+
+        using var hmac = new HMACSHA256(pepperBytes);
+        return Convert.ToBase64String(hmac.ComputeHash(pwdBytes));
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace kalam_blog.Migrations
 {
     [DbContext(typeof(KalamDbContext))]
-    partial class KalamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260324191316_custom_domain")]
+    partial class custom_domain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,14 +39,6 @@ namespace kalam_blog.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("CustomDomain")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("DefaultDomain")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("timestamp with time zone");
 
@@ -62,9 +57,6 @@ namespace kalam_blog.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("MemberStatus")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -90,9 +82,6 @@ namespace kalam_blog.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
-                    b.Property<bool>("SquatterFlag")
-                        .HasColumnType("boolean");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
@@ -102,6 +91,20 @@ namespace kalam_blog.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
+
+                    b.Property<string>("custom_domain")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("default_domain")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("member_status")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("squatter_flag")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 

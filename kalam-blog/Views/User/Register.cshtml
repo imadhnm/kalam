@@ -1,3 +1,4 @@
+@using Microsoft.AspNetCore.Components.Forms
 @model UserViewModel;
 @{
     ViewData["Title"] = "Register";
@@ -5,7 +6,7 @@
 
 <style>
     .register {
-        max-width: fit-content;
+        max-width: 800px;
         text-align: center;
         margin-left: auto;
         margin-right: auto;
@@ -23,17 +24,12 @@
     input {
         line-height: 1em;
         padding: 8px;
-        margin-bottom: 10px;
+        margin-bottom: 2px;
         width: -webkit-fill-available;
     }
 
-    .action-input {
-        text-align: left;
-        width: 60%;
-    }
-
-    .action-input input[type='checkbox'] {
-        width: 10%;
+    input[type="submit"] {
+        margin-top: 10px;
     }
 
     p {
@@ -51,19 +47,23 @@
         <form asp-controller="User" asp-action="Register" method="post">
             <label>Email</label>
             <input type="email" asp-for="Email" name="Email" placeholder="email" />
+            <small><span asp-validation-for="Email" class="field-error"></span></small>
+            <br />
+            <label>Username</label>
+            <input type="username" asp-for="Username" name="Username" placeholder="username" />
+            <small><span asp-validation-for="Username" class="field-error"></span></small>
+            <br />
             <label>Password</label>
             <input type="password" asp-for="Password" name="Password" placeholder="password" />
+            <small><span asp-validation-for="Password" class="field-error"></span></small>
+            <br />
             <label>Confirm Password</label>
-            <input type="password" name="c_password" placeholder="confirm password" />
+            <input type="password" asp-for="ConfirmPassword" name="ConfirmPassword" placeholder="confirm password" />
+            <small><span asp-validation-for="ConfirmPassword" class="field-error"></span></small>
+            <br />
             <input type="submit" value="Register">
 
-            <p>Already have an account? <a asp-area="" asp-controller="User" asp-action="Login">Login</a>
-            </p>
+            <p>Already have an account? <a asp-area="" asp-controller="User" asp-action="Login">Login</a></p>
         </form>
     </div>
 </div>
-
-@section Scripts {
-    <script>
-    </script>
-}

@@ -11,6 +11,7 @@
   --button-colour: #4477ce;
   --button-active-border: #76d2db;
   --button-error-border: #da4848;
+  --error-text: #ff1f1f;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,6 +21,7 @@
     --link-colour: #6367ff;
     --link-visited-colour: #90b8f8;
     --button-colour: #4477ce;
+    --error-text: #ff2d2d;
   }
 }
 
@@ -74,4 +76,11 @@ button,
 input[type="submit"] {
   background-color: var(--button-colour);
   border-color: var(--button-colour);
+}
+
+.field-error,
+.field-validation-error {
+  color: var(--error-text);
+  font-style: italic;
+  font-weight: bold;
 }

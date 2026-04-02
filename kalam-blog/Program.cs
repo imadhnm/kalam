@@ -8,18 +8,20 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<KalamDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(config =>
 {
-    options.Password.RequireDigit = true;
-    options.Password.RequiredLength = 8;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = true;
+    config.Password.RequireDigit = true;
+    config.Password.RequiredLength = 8;
+    config.Password.RequireUppercase = true;
+    config.Password.RequireNonAlphanumeric = true;
 
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+    // config.SignIn.RequireConfirmedEmail = true;
 })
 .AddEntityFrameworkStores<KalamDbContext>()
 .AddDefaultTokenProviders();
+
+// Configure Options
+builder.Services.Configure<PwdRecipe>(builder.Configuration.GetSection("PwdRecipe"));
 
 //configure service container with di
 builder.Services.UserServices();

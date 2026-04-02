@@ -1,4 +1,4 @@
-@model UserViewModel;
+@model LoginViewModel;
 
 @{
     ViewData["Title"] = "Login";
@@ -45,14 +45,18 @@
     <div class="login-form-container">
         <h2>Login</h2>
         <form asp-controller="User" asp-action="Login" method="post">
-            <label>Email</label>
-            <input type="email" asp-for="Email" name="Email" placeholder="email" />
+            @* <label>Email</label>
+            <input type="email" asp-for="Email" name="Email" placeholder="email" /> *@
+            <label>Username</label>
+            <input type="username" asp-for="Username" name="Username" placeholder="username" />
+            @* <small><span asp-validation-for="Username" class="field-error"></span></small>
+            <br /> *@
             <label>Password</label>
             <input type="password" asp-for="Password" name="Password" placeholder="password" />
 
             <div class="action-input">
                 <label for="rememberMe" style="float: left;">
-                    <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe">
+                    <input type="checkbox" id="rememberMe" asp-for="RememberMe" name="RememberMe" />
                     Remember me
                 </label>
 

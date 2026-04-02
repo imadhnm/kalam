@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>kalam_blog</RootNamespace>
+    <UserSecretsId>e0cf9c21-e634-4343-a5e3-27bfc9fa1666</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
