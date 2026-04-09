@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
@@ -83,12 +84,14 @@ public class UserController : Controller
         }
 
         var _password = PepperdPassword(model.Password);
-        var user = new UserDTO(model.Username, model.Email, _password);
+        var userInfo = new UserDTO(model.Username, model.Email, _password);
 
-        var res = await _userService.Register(user);
+        var res = await _userService.Register(userInfo);
 
         if (res.IsSuccess)
         {
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             return RedirectToAction("Index", "Home");
         }
 

@@ -1,4 +1,5 @@
 
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,8 +33,6 @@ public class KalamUserService : IKalamUserService
 
         try
         {
-            // var hashedPassword = _passwordHasher.HashPassword(null, userInfo.Password);
-
             var user = new ApplicationUser
             {
                 Email = userInfo.Email,
@@ -46,6 +45,8 @@ public class KalamUserService : IKalamUserService
             {
                 return Result.Failed(UserError.UserCreationFailed);
             }
+
+            await _signInManager.SignInAsync(user, true);
 
             return Result.Succeeded();
         }
