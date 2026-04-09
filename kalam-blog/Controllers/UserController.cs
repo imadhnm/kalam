@@ -20,6 +20,11 @@ public class UserController : Controller
 
     public IActionResult Login()
     {
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            return Redirect("/Home");
+        }
+
         return View();
     }
 
@@ -45,20 +50,32 @@ public class UserController : Controller
             return View(model);
         }
         var _password = PepperdPassword(model.Password);
-        var user = new UserDTO(model.Username, string.Empty, _password);
+        var user = new LoginDTO(model.Username, _password, model.RememberMe);
 
         var res = await _userService.Login(user);
 
         if (res)
         {
-            return RedirectToAction("Index", "Home");
+            return Redirect("/Home");
         }
 
         return View();
     }
 
+    public async Task<IActionResult> Logout()
+    {
+        await _userService.Logout();
+
+        return Redirect("/Home");
+    }
+
     public IActionResult Register()
     {
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            return Redirect("/Home");
+        }
+
         return View();
     }
 
@@ -92,7 +109,7 @@ public class UserController : Controller
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            return RedirectToAction("Index", "Home");
+            return Redirect("/Home");
         }
 
         return View();

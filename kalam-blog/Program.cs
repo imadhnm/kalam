@@ -20,6 +20,14 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(config =>
 .AddEntityFrameworkStores<KalamDbContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.ConfigureApplicationCookie(option =>
+{
+    option.Cookie.HttpOnly = true;
+    option.ExpireTimeSpan = TimeSpan.FromDays(30);
+    option.SlidingExpiration = true;
+    option.LoginPath = "/user/login";
+});
+
 // Configure Options
 builder.Services.Configure<PwdRecipe>(builder.Configuration.GetSection("PwdRecipe"));
 
@@ -51,9 +59,15 @@ app.MapStaticAssets();
 
 //custom route mapping to url:port/actionName
 app.MapControllerRoute(
-    name: "HomeActions",
+    name: "UserActions",
     pattern: "{action=Index}/{id?}",
     new { controller = "User" })
+    .WithStaticAssets();
+
+app.MapControllerRoute(
+    name: "HomeActions",
+    pattern: "home",
+    new { controller = "Home" })
     .WithStaticAssets();
 
 app.MapControllerRoute(

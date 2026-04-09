@@ -46,7 +46,7 @@ public class KalamUserService : IKalamUserService
                 return Result.Failed(UserError.UserCreationFailed);
             }
 
-            await _signInManager.SignInAsync(user, true);
+            await _signInManager.SignInAsync(user, isPersistent: true);
 
             return Result.Succeeded();
         }
@@ -56,7 +56,7 @@ public class KalamUserService : IKalamUserService
         }
     }
 
-    public async Task<bool> Login(UserDTO userInfo)
+    public async Task<bool> Login(LoginDTO userInfo)
     {
         try
         {
@@ -72,7 +72,7 @@ public class KalamUserService : IKalamUserService
             //this failsif the user's email is not confirmed thanks to "config.SignIn.RequireConfirmedEmail = true;" 
             //in "Program.cs". Have commented it for now. Uncomment it after implementing "Verify Email" feature. 
             //My head hurts trying to figure out why this kept failing
-            var _signIn = await _signInManager.PasswordSignInAsync(_user, userInfo.Password, false, false);
+            var _signIn = await _signInManager.PasswordSignInAsync(_user, userInfo.Password, userInfo.IsPersist, false);
 
             if (!_signIn.Succeeded)
             {
@@ -86,6 +86,13 @@ public class KalamUserService : IKalamUserService
 
             throw;
         }
+    }
+
+    public async Task<bool> Logout()
+    {
+        await _signInManager.SignOutAsync();
+
+        return true;
     }
 
     private async Task<bool> CheckUsernameAvailability(string username)
