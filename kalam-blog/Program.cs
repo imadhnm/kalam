@@ -15,6 +15,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(config =>
     config.Password.RequireUppercase = true;
     config.Password.RequireNonAlphanumeric = true;
 
+    config.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+
     // config.SignIn.RequireConfirmedEmail = true;
 })
 .AddEntityFrameworkStores<KalamDbContext>()

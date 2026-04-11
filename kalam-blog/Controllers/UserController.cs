@@ -20,7 +20,7 @@ public class UserController : Controller
 
     public IActionResult Login()
     {
-        if (User.Identity?.IsAuthenticated == true)
+        if (User.Identity != null && User.Identity.IsAuthenticated == true)
         {
             return Redirect("/Home");
         }
@@ -71,7 +71,7 @@ public class UserController : Controller
 
     public IActionResult Register()
     {
-        if (User.Identity?.IsAuthenticated == true)
+        if (User.Identity != null && User.Identity.IsAuthenticated == true)
         {
             return Redirect("/Home");
         }

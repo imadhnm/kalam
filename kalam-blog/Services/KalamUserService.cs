@@ -60,9 +60,7 @@ public class KalamUserService : IKalamUserService
     {
         try
         {
-            var _username = userInfo.Username.ToUpper();
-
-            var _user = await _userManager.Users.Where(x => x.NormalizedUserName == _username).FirstOrDefaultAsync();
+            var _user = await _userManager.FindByNameAsync(userInfo.Username);
 
             if (_user == null)
             {
@@ -88,20 +86,18 @@ public class KalamUserService : IKalamUserService
         }
     }
 
-    public async Task<bool> Logout()
+    public async Task Logout()
     {
         await _signInManager.SignOutAsync();
-
-        return true;
     }
 
     private async Task<bool> CheckUsernameAvailability(string username)
     {
         try
         {
-            var _user = username.ToUpper();
+            var normalizedUsername = username.ToUpper();
 
-            var res = _kalamdb.Users.Where(x => x.NormalizedUserName == _user).Select(o => o.UserName);
+            var res = _kalamdb.Users.Where(x => x.NormalizedUserName == normalizedUsername).Select(o => o.UserName);
 
             if (res != null)
             {
@@ -121,9 +117,9 @@ public class KalamUserService : IKalamUserService
     {
         try
         {
-            var _user = email.ToUpper();
+            var normalizedUsername = email.ToUpper();
 
-            var res = _kalamdb.Users.Where(x => x.NormalizedEmail == _user).Select(o => o.Email);
+            var res = _kalamdb.Users.Where(x => x.NormalizedEmail == normalizedUsername).Select(o => o.Email);
 
             if (res != null)
             {
