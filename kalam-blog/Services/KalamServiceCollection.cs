@@ -2,7 +2,7 @@ public static class KalamServiceCollection
 {
     public static IServiceCollection UserServices(this IServiceCollection services)
     {
-        services.AddScoped<IKalamUserService, KalamUserService>();
+        services.AddScoped<IAuthService, AuthService>();
         return services;
     }
 }

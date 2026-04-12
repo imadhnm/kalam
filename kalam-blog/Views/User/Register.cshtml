@@ -1,50 +1,24 @@
 @using Microsoft.AspNetCore.Components.Forms
 @model UserViewModel;
+
 @{
     ViewData["Title"] = "Register";
 }
 
 <style>
-    .register {
-        max-width: 800px;
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .register-form-container {
-        width: 50%;
-        margin: 10px auto;
-    }
-
-    form {
-        text-align: left;
-    }
-
-    input {
-        line-height: 1em;
-        padding: 8px;
-        margin-bottom: 2px;
-        width: -webkit-fill-available;
-    }
-
     input[type="submit"] {
         margin-top: 10px;
     }
-
-    p {
-        text-align: center;
-    }
 </style>
 
-<div class="register">
+<div class="user-form">
     <div class="header-container">
         <h1>Kalam</h1>
     </div>
 
-    <div class="register-form-container">
+    <div class="user-form-container">
         <h2>Register</h2>
-        <form asp-controller="User" asp-action="Register" method="post">
+        <form asp-controller="Auth" asp-action="Register" method="post">
             <label>Email</label>
             <input type="email" asp-for="Email" name="Email" placeholder="email" />
             <small><span asp-validation-for="Email" class="field-error"></span></small>

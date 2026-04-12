@@ -33,6 +33,7 @@ body {
   word-wrap: break-word;
   overflow-wrap: break-word;
   margin: auto;
+  max-width: var(--max-width);
 }
 
 h1,
@@ -76,6 +77,7 @@ button,
 input[type="submit"] {
   background-color: var(--button-colour);
   border-color: var(--button-colour);
+  cursor: pointer;
 }
 
 .field-error,

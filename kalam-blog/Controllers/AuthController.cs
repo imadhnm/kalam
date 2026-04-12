@@ -7,14 +7,14 @@ using Microsoft.Extensions.Options;
 
 namespace kalam_blog.Controllers;
 
-public class UserController : Controller
+public class AuthController : Controller
 {
-    private readonly IKalamUserService _userService;
+    private readonly IAuthService _authService;
     private readonly IOptions<PwdRecipe> _hashRecipe;
 
-    public UserController(IKalamUserService userService, IOptions<PwdRecipe> hashRecipe)
+    public AuthController(IAuthService authService, IOptions<PwdRecipe> hashRecipe)
     {
-        _userService = userService;
+        _authService = authService;
         _hashRecipe = hashRecipe;
     }
 
@@ -52,7 +52,7 @@ public class UserController : Controller
         var _password = PepperdPassword(model.Password);
         var user = new LoginDTO(model.Username, _password, model.RememberMe);
 
-        var res = await _userService.Login(user);
+        var res = await _authService.Login(user);
 
         if (res)
         {
@@ -64,7 +64,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> Logout()
     {
-        await _userService.Logout();
+        await _authService.Logout();
 
         return Redirect("/Home");
     }
@@ -103,7 +103,7 @@ public class UserController : Controller
         var _password = PepperdPassword(model.Password);
         var userInfo = new UserDTO(model.Username, model.Email, _password);
 
-        var res = await _userService.Register(userInfo);
+        var res = await _authService.Register(userInfo);
 
         if (res.IsSuccess)
         {
@@ -117,6 +117,44 @@ public class UserController : Controller
 
     public async Task<IActionResult> VerifyEmail()
     {
+        return View();
+    }
+
+    public async Task<IActionResult> ForgotPassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var res = _authService.ForgotPassword(model.Email);
+
+        return View();
+    }
+
+    public async Task<IActionResult> ResetPassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var _password = PepperdPassword(model.Password);
+
+        var res = _authService.ResetPassword(new Guid(), _password);
+
         return View();
     }
 

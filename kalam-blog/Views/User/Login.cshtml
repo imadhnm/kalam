@@ -5,54 +5,26 @@
 }
 
 <style>
-    .login {
-        max-width: fit-content;
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .login-form-container {
-        width: 80%;
-        margin: 10px auto;
-    }
-
-    form {
-        text-align: left;
-    }
-
-    input {
-        line-height: 1em;
-        padding: 8px;
-        margin-bottom: 10px;
-        width: -webkit-fill-available;
-    }
-
     .action-input input[type='checkbox'] {
         width: 10%;
     }
-
-    p {
-        text-align: center;
-    }
 </style>
 
-<div class="login">
+<div class="user-form">
     <div class="header-container">
         <h1>Kalam</h1>
     </div>
 
-    <div class="login-form-container">
+    <div class="user-form-container">
         <h2>Login</h2>
-        <form asp-controller="User" asp-action="Login" method="post">
-            @* <label>Email</label>
-            <input type="email" asp-for="Email" name="Email" placeholder="email" /> *@
+        <form asp-controller="Auth" asp-action="Login" method="post">
             <label>Username</label>
             <input type="username" asp-for="Username" name="Username" placeholder="username" />
-            @* <small><span asp-validation-for="Username" class="field-error"></span></small>
-            <br /> *@
+            <small><span asp-validation-for="Username" class="field-error"></span></small>
+            <br />
             <label>Password</label>
             <input type="password" asp-for="Password" name="Password" placeholder="password" />
+            <small><span asp-validation-for="Password" class="field-error"></span></small>
 
             <div class="action-input">
                 <label for="rememberMe" style="float: left;">
@@ -60,7 +32,9 @@
                     Remember me
                 </label>
 
-                <label style="float: right;"><a href="">Forgot Password?</a></label>
+                <label style="float: right;">
+                    <a asp-controller="User" asp-action="ForgotPassword">Forgot Password?</a>
+                </label>
             </div>
 
             <input type="submit" value="Login">

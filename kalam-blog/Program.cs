@@ -61,9 +61,9 @@ app.MapStaticAssets();
 
 //custom route mapping to url:port/actionName
 app.MapControllerRoute(
-    name: "UserActions",
+    name: "AuthActions",
     pattern: "{action=Index}/{id?}",
-    new { controller = "User" })
+    new { controller = "Auth" })
     .WithStaticAssets();
 
 app.MapControllerRoute(

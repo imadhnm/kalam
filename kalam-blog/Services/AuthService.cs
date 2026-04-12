@@ -3,14 +3,14 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-public class KalamUserService : IKalamUserService
+public class AuthService : IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
     private readonly KalamDbContext _kalamdb;
 
-    public KalamUserService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
+    public AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
                                 IPasswordHasher<ApplicationUser> passwordHasher, KalamDbContext kalamDb)
     {
         _userManager = userManager;
@@ -21,12 +21,12 @@ public class KalamUserService : IKalamUserService
 
     public async Task<Result> Register(UserDTO userInfo)
     {
-        if (!await CheckUsernameAvailability(userInfo.Username))
+        if (await CheckUsernameAvailability(userInfo.Username))
         {
             return Result.Failed(UserError.UsernameAlreadyExists);
         }
 
-        if (!await CheckEmailAlreadyExist(userInfo.Email))
+        if (await CheckEmailAlreadyExist(userInfo.Email))
         {
             return Result.Failed(UserError.EmailAlreadyExists);
         }
@@ -97,14 +97,7 @@ public class KalamUserService : IKalamUserService
         {
             var normalizedUsername = username.ToUpper();
 
-            var res = _kalamdb.Users.Where(x => x.NormalizedUserName == normalizedUsername).Select(o => o.UserName);
-
-            if (res != null)
-            {
-                return true;
-            }
-
-            return false;
+            return await _userManager.Users.AnyAsync(x => x.NormalizedUserName == normalizedUsername);
         }
         catch (Exception)
         {
@@ -117,21 +110,31 @@ public class KalamUserService : IKalamUserService
     {
         try
         {
-            var normalizedUsername = email.ToUpper();
+            var normalizedEmail = email.ToUpper();
 
-            var res = _kalamdb.Users.Where(x => x.NormalizedEmail == normalizedUsername).Select(o => o.Email);
-
-            if (res != null)
-            {
-                return true;
-            }
-
-            return false;
+            return await _userManager.Users.AnyAsync(x => x.NormalizedEmail == normalizedEmail);
         }
         catch (System.Exception)
         {
 
             throw;
         }
+    }
+
+    public async Task<bool> ResetPassword(Guid UserId, string newPassword)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<bool> ForgotPassword(string email)
+    {
+        var emailExists = await CheckEmailAlreadyExist(email);
+
+        if (!emailExists)
+        {
+
+        }
+
+        throw new NotImplementedException();
     }
 }
