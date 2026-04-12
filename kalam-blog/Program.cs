@@ -34,7 +34,7 @@ builder.Services.ConfigureApplicationCookie(option =>
 builder.Services.Configure<PwdRecipe>(builder.Configuration.GetSection("PwdRecipe"));
 
 //configure service container with di
-builder.Services.UserServices();
+builder.Services.AuthServices();
 
 var app = builder.Build();
 
