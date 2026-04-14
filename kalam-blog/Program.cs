@@ -1,4 +1,6 @@
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +23,17 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(config =>
 })
 .AddEntityFrameworkStores<KalamDbContext>()
 .AddDefaultTokenProviders();
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("user", config =>
+    {
+        config.PermitLimit = 6;
+        config.Window = TimeSpan.FromMinutes(1);
+        config.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        config.QueueLimit = 0;
+    });
+});
 
 builder.Services.ConfigureApplicationCookie(option =>
 {

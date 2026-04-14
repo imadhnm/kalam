@@ -9,14 +9,16 @@ public class AuthService : IAuthService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
     private readonly KalamDbContext _kalamdb;
+    private readonly ILogger<AuthService> _logger;
 
     public AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-                                IPasswordHasher<ApplicationUser> passwordHasher, KalamDbContext kalamDb)
+                                IPasswordHasher<ApplicationUser> passwordHasher, KalamDbContext kalamDb, ILogger<AuthService> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _passwordHasher = passwordHasher;
         _kalamdb = kalamDb;
+        _logger = logger;
     }
 
     public async Task<Result> Register(UserDTO userInfo)
@@ -52,6 +54,7 @@ public class AuthService : IAuthService
         }
         catch (Exception ex)
         {
+            // _logger.LogError(ex.Message);
             throw;
         }
     }
@@ -74,6 +77,15 @@ public class AuthService : IAuthService
 
             if (!_signIn.Succeeded)
             {
+                // _logger.LogWarning(
+                //     "Failed login attempt for {Username} from IP {IP} at {Time}",
+                //     userInfo.Username,
+                //     httpContextAccessor.HttpContext?.Connection.RemoteIpAddress,
+                //     DateTime.UtcNow
+                // );
+
+
+                await _userManager.AccessFailedAsync(_user);
                 return false;
             }
 
