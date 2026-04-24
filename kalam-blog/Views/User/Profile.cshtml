@@ -1,0 +1,117 @@
+@{
+    ViewData["Title"] = "Imadh Nizar | Kalam.ink";
+}
+
+<style>
+    .profile-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 2rem;
+    }
+
+    .profile-navbar ul {
+        list-style: none;
+        display: flex;
+        gap: 0;
+        padding-left: 0.5rem;
+    }
+
+    .profile-navbar ul li a {
+        display: block;
+        padding: 12px 20px;
+        text-decoration: none;
+        font-size: 14px;
+        white-space: nowrap;
+        color: #1e201e;
+    }
+
+    a.active {
+        border-bottom: solid 1px #1e201e;
+    }
+
+    a:hover {
+        border-bottom: solid 1px #1e201e;
+    }
+
+    .nav-toggle,
+    #nav-more-toggle {
+        display: none;
+    }
+
+    @@media (prefers-color-scheme: dark) {
+        .profile-navbar ul li a {
+            color: #f1f6f9;
+        }
+
+        a.active {
+            border-bottom: solid 1px #f1f6f9;
+        }
+
+        a:hover {
+            border-bottom: solid 1px #f1f6f9;
+        }
+    }
+
+    @@media (max-width:480px) {
+        .profile-navbar ul li:nth-child(n+4) {
+            display: none;
+        }
+
+        .profile-navbar ul li.nav-more-item {
+            display: list-item;
+        }
+
+        #nav-more-toggle:checked~ul li:nth-child(-n+3) {
+            display: none;
+        }
+
+        #nav-more-toggle:checked~ul .nav-more-item {
+            display: none;
+        }
+
+        #nav-more-toggle:checked~ul li:nth-child(n+4):not(.nav-more-item):not(.nav-back-item) {
+            display: list-item;
+        }
+
+        #nav-more-toggle:checked~ul .nav-back-item {
+            display: list-item;
+        }
+    }
+</style>
+
+<div class="profile-header">
+    <h2>Imadh Nizar</h2>
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <p><a href="~/Auth/Logout">Logout</a></p>
+    }
+
+    <p><a href="~/Auth/Logout">Logout</a></p>
+</div>
+<div class="profile-navbar">
+
+    <input type="checkbox" id="nav-more-toggle">
+
+    <ul>
+        <li><a href="#" class="active">Dashboard</a></li>
+        <li><a href="#">Blogs</a></li>
+        <li><a href="#">Blog Roll</a></li>
+        <li><a href="#">Bookmarks</a></li>
+        <li><a href="#">Settings</a></li>
+
+        <li class="nav-more-item nav-toggle">
+            <label for="nav-more-toggle">
+                <a>More &rsaquo;</a>
+            </label>
+        </li>
+
+        <li class="nav-back-item nav-toggle">
+            <label for="nav-more-toggle">
+                <a>&lsaquo; Back</a>
+            </label>
+        </li>
+    </ul>
+</div>
+<div class="profile-pages">
+
+</div>
