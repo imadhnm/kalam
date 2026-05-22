@@ -1,0 +1,56 @@
+@using Microsoft.AspNetCore.Components.Forms
+@model SettingsViewModel;
+
+@{
+    Layout = "_ProfileLayout";
+}
+
+<style>
+    .form {
+        max-width: 400px;
+    }
+
+    input {
+        line-height: 1em;
+        padding: 8px;
+        margin-bottom: 10px;
+        width: -webkit-fill-available;
+    }
+</style>
+
+<div class="email-form-container form">
+    <h3>Update Email Address</h3>
+    <form asp-controller="Auth" asp-action="Login" method="post">
+        <label>Email</label>
+        <input type="text" asp-for="Email" name="Email" placeholder="Email" />
+        <small><span asp-validation-for="Email" class="field-error"></span></small>
+        <br />
+
+        <input type="submit" value="Update">
+    </form>
+</div>
+
+<div class="password-form-container form">
+    <h3>Change Password</h3>
+    <form asp-controller="User" asp-action="Settings" method="post">
+        <label>Current Password</label>
+        <input type="password" asp-for="PasswordViewModel.Password" name="Password" placeholder="password" />
+        <small><span asp-validation-for="PasswordViewModel.Password" class="field-error"></span></small>
+        <br />
+        <label>New Password</label>
+        <input type="password" asp-for="PasswordViewModel.NewPassword" name="NewPassword" placeholder="new password" />
+        <small><span asp-validation-for="PasswordViewModel.NewPassword" class="field-error"></span></small>
+        <br />
+        <label>Confirm Password</label>
+        <input type="password" asp-for="PasswordViewModel.ConfirmPassword" name="ConfirmPassword"
+               placeholder="confirm password" />
+        <small><span asp-validation-for="PasswordViewModel.ConfirmPassword" class="field-error"></span></small>
+        <br />
+
+        <input type="submit" value="Change Password">
+    </form>
+</div>
+
+<div class="form">
+    <input type="submit" class="danger" value="Delete Account" />
+</div>

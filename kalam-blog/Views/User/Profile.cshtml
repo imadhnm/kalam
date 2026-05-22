@@ -1,36 +1,16 @@
+@model ProfileViewModel;
+
 @{
     ViewData["Title"] = "Imadh Nizar | Kalam.ink";
 }
 
 <style>
-    .profile-header {
-        display: flex;
-        justify-content: space-between;
-        padding: 2rem;
-    }
-
-    .profile-navbar ul {
-        list-style: none;
-        display: flex;
-        gap: 0;
-        padding-left: 0.5rem;
-    }
-
-    .profile-navbar ul li a {
-        display: block;
-        padding: 12px 20px;
-        text-decoration: none;
-        font-size: 14px;
-        white-space: nowrap;
-        color: #1e201e;
-    }
-
     a.active {
-        border-bottom: solid 1px #1e201e;
+        border-bottom: solid 2px var(--anchor-border-bottom-colour);
     }
 
     a:hover {
-        border-bottom: solid 1px #1e201e;
+        border-bottom: solid 1px var(--anchor-border-bottom-colour);
     }
 
     .nav-toggle,
@@ -38,22 +18,13 @@
         display: none;
     }
 
-    @@media (prefers-color-scheme: dark) {
-        .profile-navbar ul li a {
-            color: #f1f6f9;
-        }
-
-        a.active {
-            border-bottom: solid 1px #f1f6f9;
-        }
-
-        a:hover {
-            border-bottom: solid 1px #f1f6f9;
-        }
+    .profile-navbar a {
+        text-decoration: none;
+        color: var(----font-colour);
     }
 
     @@media (max-width:480px) {
-        .profile-navbar ul li:nth-child(n+4) {
+        .profile-navbar ul li:nth-child(n+3) {
             display: none;
         }
 
@@ -61,7 +32,7 @@
             display: list-item;
         }
 
-        #nav-more-toggle:checked~ul li:nth-child(-n+3) {
+        #nav-more-toggle:checked~ul li:nth-child(-n+2) {
             display: none;
         }
 
@@ -69,7 +40,7 @@
             display: none;
         }
 
-        #nav-more-toggle:checked~ul li:nth-child(n+4):not(.nav-more-item):not(.nav-back-item) {
+        #nav-more-toggle:checked~ul li:nth-child(n+3):not(.nav-more-item):not(.nav-back-item) {
             display: list-item;
         }
 
@@ -77,9 +48,36 @@
             display: list-item;
         }
     }
+
+    .profile-pages,
+    .profile-pages:target~#dashboard {
+        display: none;
+    }
+    
+    #dashboard,
+    .profile-pages:target {
+        display: block;
+    }
+
+    .profile-pages {
+        padding: 12px 20px;
+    }
 </style>
 
-<div class="profile-header">
+@if (Model.ActiveTab != null)
+{
+    <style>
+        .profile-pages {
+            display: none;
+        }
+
+        .profile-pages:target {
+            display: block;
+        }
+    </style>
+}
+
+<div class="profile-header" style="display: flex; justify-content: space-between; padding:2rem;">
     <h2>Imadh Nizar</h2>
     @if (User.Identity != null && User.Identity.IsAuthenticated)
     {
@@ -88,30 +86,50 @@
 
     <p><a href="~/Auth/Logout">Logout</a></p>
 </div>
+
 <div class="profile-navbar">
 
     <input type="checkbox" id="nav-more-toggle">
 
-    <ul>
-        <li><a href="#" class="active">Dashboard</a></li>
-        <li><a href="#">Blogs</a></li>
-        <li><a href="#">Blog Roll</a></li>
-        <li><a href="#">Bookmarks</a></li>
-        <li><a href="#">Settings</a></li>
+    <ul style="list-style: none; display: flex; gap: 0; padding: 0.5rem;">
+        <li><a href="#dashboard" class="profile-nav-menu active" style="padding: 12px 20px;">Dashboard</a></li>
+        <li><a href="#blogs" class="profile-nav-menu" style="padding: 12px 20px;">Blogs</a></li>
+        <li><a href="#bookmark" class="profile-nav-menu" style="padding: 12px 20px;">Bookmarks</a></li>
+        <li><a href="#settings" class="profile-nav-menu" style="padding: 12px 20px;">Settings</a></li>
 
         <li class="nav-more-item nav-toggle">
             <label for="nav-more-toggle">
-                <a>More &rsaquo;</a>
+                <a style="padding: 12px 20px;">More &rsaquo;</a>
             </label>
         </li>
 
         <li class="nav-back-item nav-toggle">
             <label for="nav-more-toggle">
-                <a>&lsaquo; Back</a>
+                <a style="padding: 12px 20px;">&lsaquo; Back</a>
             </label>
         </li>
     </ul>
 </div>
-<div class="profile-pages">
 
+<div id="blogs" class="profile-pages">
 </div>
+<div id="bookmark" class="profile-pages">
+</div>
+<div id="settings" class="profile-pages">
+    <partial name="_Settings.cshtml" for="@Model.SettingsViewModel" />
+</div>
+<div id="dashboard" class="profile-pages">
+    <partial name="_Dashboard.cshtml" />
+</div>
+
+<script>
+    const navItems = document.querySelectorAll('.profile-nav-menu');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', function () {
+            navItems.forEach(li => li.classList.remove('active'));
+            
+            this.classList.add('active');
+        });
+    });
+</script>

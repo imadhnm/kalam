@@ -12,16 +12,23 @@
   --button-active-border: #76d2db;
   --button-error-border: #da4848;
   --error-text: #ff1f1f;
+  --anchor-border-bottom-colour: #1e201e;
+  --container-backround-colour: #e9eae9;
+  --danger-button-colour: #da4848;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background-colour-code: #1e201e;
+    /* --background-colour-code: #2A3335; */
     --font-colour: #f1f6f9;
     --link-colour: #6367ff;
     --link-visited-colour: #90b8f8;
     --button-colour: #4477ce;
     --error-text: #ff2d2d;
+    --anchor-border-bottom-colour: #f1f6f9;
+    --anchor-border-bottom-faded: #686868;
+    --container-backround-colour: #252925bf;
   }
 }
 
@@ -74,7 +81,7 @@ input:focus {
 }
 
 button,
-input[type="submit"] {
+input[type="submit"]:not(.danger) {
   background-color: var(--button-colour);
   border-color: var(--button-colour);
   cursor: pointer;
@@ -85,4 +92,9 @@ input[type="submit"] {
   color: var(--error-text);
   font-style: italic;
   font-weight: bold;
+}
+
+.danger {
+  background-color: var(--danger-button-colour);
+  cursor: pointer;
 }

@@ -48,6 +48,7 @@ builder.Services.Configure<PwdRecipe>(builder.Configuration.GetSection("PwdRecip
 
 //configure service container with di
 builder.Services.AuthServices();
+builder.Services.UserServices();
 
 var app = builder.Build();
 

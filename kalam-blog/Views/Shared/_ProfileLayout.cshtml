@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - kalam_blog</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/css/default.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+</head>
+
+<body>
+
+    <div class="profile-header" style="display: flex; justify-content: space-between; padding:2rem;">
+        <h2>Imadh Nizar</h2>
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <p><a href="~/Auth/Logout">Logout</a></p>
+        }
+
+        <p><a href="~/Auth/Logout">Logout</a></p>
+    </div>
+
+    <div class="profile-navbar">
+
+        <input type="checkbox" id="nav-more-toggle">
+
+        <ul style="list-style: none; display: flex; gap: 0; padding: 0.5rem;">
+            <li>
+                <a href="@Url.Action("Dashboard", "User")" class="profile-nav-menu @ViewData["Dashboard_Active"]"
+                   style="padding: 12px 20px;">Dashboard</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Settings", "User")" class="profile-nav-menu" style="padding: 12px 20px;">Blogs</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Settings", "User")" class="profile-nav-menu"
+                   style="padding: 12px 20px;">Bookmarks</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Settings", "User")" class="profile-nav-menu @ViewData["Settings_Active"]"
+                   style="padding: 12px 20px;">Settings</a>
+            </li>
+
+            <li class="nav-more-item nav-toggle">
+                <label for="nav-more-toggle">
+                    <a style="padding: 12px 20px;">More &rsaquo;</a>
+                </label>
+            </li>
+
+            <li class="nav-back-item nav-toggle">
+                <label for="nav-more-toggle">
+                    <a style="padding: 12px 20px;">&lsaquo; Back</a>
+                </label>
+            </li>
+        </ul>
+    </div>
+
+    <div class="profile-pages">
+        @RenderBody()
+    </div>
+
+    <footer>
+        <div>
+            <p><i>Built by Kalam</i></p>
+        </div>
+        <div>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>&nbsp;
+            <a asp-area="" asp-controller="Home" asp-action="Documentation">Documentation</a>&nbsp;
+            <a asp-area="" asp-controller="Home" asp-action="FAQ">FAQ</a>&nbsp;
+            <a href="https://github.com/imadhnm/kalam" target="_blank">Github</a>&nbsp;
+            @* <a asp-area="" asp-controller="Home" asp-action="Terms of Service">Terms of Service</a> *@
+        </div>
+    </footer>
+
+    <script>
+        const navItems = document.querySelectorAll('.profile-nav-menu');
+
+        navItems.forEach(item => {
+        item.addEventListener('click', function () {
+        navItems.forEach(li => li.classList.remove('active'));
+
+        this.classList.add('active');
+        });
+        });
+    </script>
+
+</body>
+
+</html>

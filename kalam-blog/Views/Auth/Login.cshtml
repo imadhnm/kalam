@@ -19,7 +19,7 @@
         <h2>Login</h2>
         <form asp-controller="Auth" asp-action="Login" method="post">
             <label>Username</label>
-            <input type="username" asp-for="Username" name="Username" placeholder="username" />
+            <input type="text" asp-for="Username" name="Username" placeholder="username" />
             <small><span asp-validation-for="Username" class="field-error"></span></small>
             <br />
             <label>Password</label>
