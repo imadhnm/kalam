@@ -1,13 +1,22 @@
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace kalam_blog.Controllers;
 
 public class UserController : Controller
 {
-    public UserController()
-    {
+    private readonly IAuthService _authService;
+    private readonly IUserService _userService;
+    private readonly IOptions<PwdRecipe> _hashRecipe;
 
+    public UserController(IUserService userService, IAuthService authService, IOptions<PwdRecipe> hashRecipe)
+    {
+        _userService = userService;
+        _authService = authService;
+        _hashRecipe = hashRecipe;
     }
 
     // move to a different controller
@@ -36,20 +45,48 @@ public class UserController : Controller
     }
 
     [HttpPost]
+    public async Task<IActionResult> ChangeEmail(SettingsViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View("Settings", model);
+        }
+
+        var email = model.Email;
+
+        var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        await _userService.ChangeEmail(userId, email);
+        var em = User.FindFirstValue(ClaimTypes.Email);
+
+        return Redirect("/Settings");
+    }
+
+    [HttpPost]
     public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
     {
-        SettingsViewModel viewModel = new SettingsViewModel() { PasswordViewModel = model };
 
         if (!ModelState.IsValid)
         {
-            return PartialView("_Settings", viewModel);
+            return View("Settings", model);
         }
 
-        // // var _password = PepperdPassword(model.Password);
+        var _currentPassword = PepperdPassword(model.Password);
+        var _newPassword = PepperdPassword(model.NewPassword);
 
-        // // var res = _authService.ResetPassword(new Guid(), _password);
+        var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        // return View(viewModel);
-        return PartialView("_Settings", viewModel);
+        var res = await _authService.ResetPassword(userId, _currentPassword, _newPassword);
+
+        return View("Settings", model);
+    }
+
+    private string PepperdPassword(string password)
+    {
+        byte[] pepperBytes = Encoding.UTF8.GetBytes(_hashRecipe.Value.Secret);
+        byte[] pwdBytes = Encoding.UTF8.GetBytes(password);
+
+        using var hmac = new HMACSHA256(pepperBytes);
+        return Convert.ToBase64String(hmac.ComputeHash(pwdBytes));
     }
 }

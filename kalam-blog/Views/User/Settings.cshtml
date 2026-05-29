@@ -1,8 +1,15 @@
+@using System.Security.Claims
 @using Microsoft.AspNetCore.Components.Forms
 @model SettingsViewModel;
 
 @{
     Layout = "_ProfileLayout";
+    var email = "Email";
+
+    if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        email = User.FindFirstValue(ClaimTypes.Email);
+    }
 }
 
 <style>
@@ -20,9 +27,9 @@
 
 <div class="email-form-container form">
     <h3>Update Email Address</h3>
-    <form asp-controller="Auth" asp-action="Login" method="post">
+    <form asp-controller="User" asp-action="ChangeEmail" method="post">
         <label>Email</label>
-        <input type="text" asp-for="Email" name="Email" placeholder="Email" />
+        <input type="text" asp-for="Email" name="Email" value="@email" />
         <small><span asp-validation-for="Email" class="field-error"></span></small>
         <br />
 
@@ -32,18 +39,18 @@
 
 <div class="password-form-container form">
     <h3>Change Password</h3>
-    <form asp-controller="User" asp-action="Settings" method="post">
+    <form asp-controller="User" asp-action="ChangePassword" method="post">
         <label>Current Password</label>
-        <input type="password" asp-for="PasswordViewModel.Password" name="Password" placeholder="password" />
+        <input type="password" asp-for="PasswordViewModel.Password" name="Password" placeholder="Current Password" />
         <small><span asp-validation-for="PasswordViewModel.Password" class="field-error"></span></small>
         <br />
         <label>New Password</label>
-        <input type="password" asp-for="PasswordViewModel.NewPassword" name="NewPassword" placeholder="new password" />
+        <input type="password" asp-for="PasswordViewModel.NewPassword" name="NewPassword" placeholder="New Password" />
         <small><span asp-validation-for="PasswordViewModel.NewPassword" class="field-error"></span></small>
         <br />
         <label>Confirm Password</label>
         <input type="password" asp-for="PasswordViewModel.ConfirmPassword" name="ConfirmPassword"
-               placeholder="confirm password" />
+               placeholder="Confirm Password" />
         <small><span asp-validation-for="PasswordViewModel.ConfirmPassword" class="field-error"></span></small>
         <br />
 

@@ -156,7 +156,7 @@ public class AuthController : Controller
 
         var _password = PepperdPassword(model.Password);
 
-        var res = _authService.ResetPassword(new Guid(), _password);
+        // var res = _authService.ResetPassword(new Guid(), _password);
 
         return View();
     }

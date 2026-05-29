@@ -133,9 +133,23 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<bool> ResetPassword(Guid UserId, string newPassword)
+    public async Task<bool> ResetPassword(string UserId, string currentPassword, string newPassword)
     {
-        throw new NotImplementedException();
+        var _user = await _userManager.FindByIdAsync(UserId);
+
+        if (_user == null)
+        {
+            return false;
+        }
+
+        var res = await _userManager.ChangePasswordAsync(_user, currentPassword, newPassword);
+
+        if (res.Succeeded)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public async Task<bool> ForgotPassword(string email)

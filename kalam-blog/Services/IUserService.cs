@@ -4,6 +4,6 @@ public interface IUserService
     Task GetUserByEmailAsync(string email);
     Task GetUserByID(string id);
     Task<bool> ChangePassword();
-    Task<bool> ChangeEmail();
+    Task<bool> ChangeEmail(string id, string email);
     Task<bool> ChangeUsername();
 }
